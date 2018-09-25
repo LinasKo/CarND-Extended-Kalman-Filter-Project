@@ -9,14 +9,7 @@ using namespace std;
 
 class Tools {
 public:
-    /**
-    * Constructor.
-    */
     Tools();
-
-    /**
-    * Destructor.
-    */
     virtual ~Tools();
 
     /**
@@ -28,7 +21,6 @@ public:
     * A helper method to calculate Jacobians.
     */
     MatrixXd CalculateJacobian(const VectorXd& x_state);
-
 };
 
 #endif /* TOOLS_H_ */
