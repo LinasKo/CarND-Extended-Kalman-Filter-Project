@@ -1,7 +1,11 @@
 #ifndef MEASUREMENT_PACKAGE_H_
 #define MEASUREMENT_PACKAGE_H_
 
+// Suppress warnings
+#pragma GCC diagnostic push
 #include "Eigen/Dense"
+#pragma GCC diagnostic ignored "-Wall"
+#pragma GCC diagnostic pop
 
 class MeasurementPackage {
 public:
