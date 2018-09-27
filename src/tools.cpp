@@ -47,17 +47,20 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state)
 	float vx = x_state(2);
 	float vy = x_state(3);
 
-    if (px == 0 and py == 0)
+    float sq_dist = px * px + py * py;
+    float dist = sqrt(sq_dist);
+    if (sq_dist < 0.0001)
     {
-        cout << "[Tools::CalculateJacobian] Error: px and py are both 0." << endl;
+        cout << "[Tools::CalculateJacobian] Error: (px^2 + py^2) is too close to zero." << endl;
+        Hj.setZero();
         return Hj;
     }
 
 	//compute the Jacobian matrix
-	float dist = sqrt(px * px + py * py);
+
 	Hj << px / dist, py / dist, 0, 0,
-	      -py / (dist * dist), px / (dist * dist), 0, 0,
-	      py * (vx * py - vy * px) / (dist * dist * dist), px * (vy * px - vx * py) / (dist * dist * dist), px / dist, py / dist;
+	      -py / sq_dist, px / sq_dist, 0, 0,
+	      py * (vx * py - vy * px) / (dist * sq_dist), px * (vy * px - vx * py) / (sq_dist * dist), px / dist, py / dist;
 
 	return Hj;
 }
@@ -72,8 +75,9 @@ VectorXd Tools::CartesianToPolar(const VectorXd& x_state)
     VectorXd polar(3);
     polar <<
         sqrt(px * px + py * py),
-        atan(py / px),
+        atan2(py, px),
         (px * vx + py * vy) / sqrt(px * px + py * py);
+    cout << ">>>> angle: " << atan2(py, px) << endl;
 
     return polar;
 }

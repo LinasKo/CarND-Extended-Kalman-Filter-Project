@@ -41,11 +41,14 @@ void KalmanFilter::Update(const VectorXd &z)
     P_ = (I - K * H_) * P_;
 }
 
-void KalmanFilter::UpdateEKF(const VectorXd &z) {
-    /**
-    * DONE: update the state by using Extended Kalman Filter equations
-    */
+void KalmanFilter::UpdateEKF(const VectorXd &z)
+{
+    // DONE: update the state by using Extended Kalman Filter equations
     MatrixXd Hj_ = tools_.CalculateJacobian(x_);
+    if (Hj_.isZero(0))
+    {
+        return;
+    }
 
     VectorXd y = z - tools_.CartesianToPolar(x_);
     MatrixXd S = Hj_ * P_ * Hj_.transpose() + R_;
