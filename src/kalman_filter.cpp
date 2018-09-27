@@ -1,5 +1,8 @@
 #include "kalman_filter.h"
 
+#include <cmath>
+#include <iostream>
+
 #include "tools.h"
 
 using Eigen::MatrixXd;
@@ -51,6 +54,15 @@ void KalmanFilter::UpdateEKF(const VectorXd &z)
     }
 
     VectorXd y = z - tools_.CartesianToPolar(x_);
+    while (y(1) > M_PI)
+    {
+        y(1) -= 2 * M_PI;
+    }
+    while (y(1) <= -M_PI)
+    {
+        y(1) += 2 * M_PI;
+    }
+
     MatrixXd S = Hj_ * P_ * Hj_.transpose() + R_;
     MatrixXd K = P_ * Hj_.transpose() * S.inverse();
 

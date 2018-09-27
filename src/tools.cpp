@@ -57,7 +57,6 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state)
     }
 
 	//compute the Jacobian matrix
-
 	Hj << px / dist, py / dist, 0, 0,
 	      -py / sq_dist, px / sq_dist, 0, 0,
 	      py * (vx * py - vy * px) / (dist * sq_dist), px * (vy * px - vx * py) / (sq_dist * dist), px / dist, py / dist;
@@ -73,11 +72,10 @@ VectorXd Tools::CartesianToPolar(const VectorXd& x_state)
     float vy = x_state(3);
 
     VectorXd polar(3);
-    polar <<
-        sqrt(px * px + py * py),
-        atan2(py, px),
-        (px * vx + py * vy) / sqrt(px * px + py * py);
-    cout << ">>>> angle: " << atan2(py, px) << endl;
+    float dist = sqrt(px * px + py * py);
+    float angle = atan2(py, px);
+    float angular_vel = (px * vx + py * vy) / dist;
+    polar << dist, angle, angular_vel;
 
     return polar;
 }
